@@ -1,0 +1,97 @@
+{
+  "project_info": {
+    "project_number": "827889838762",
+    "project_id": "instagramclone-27888",
+    "storage_bucket": "instagramclone-27888.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:827889838762:android:7a7ca22084231d78777ed3",
+        "android_client_info": {
+          "package_name": "com.example.instagramapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "827889838762-5varfhrsgp4666047fukt0u2q2apgv6d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgOz2OYDh0yFg9a9jG0p6Ak10ktWZBYIw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "827889838762-5varfhrsgp4666047fukt0u2q2apgv6d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:827889838762:android:01c21dcbf57c6b05777ed3",
+        "android_client_info": {
+          "package_name": "com.example.instagramclone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "827889838762-5varfhrsgp4666047fukt0u2q2apgv6d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgOz2OYDh0yFg9a9jG0p6Ak10ktWZBYIw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "827889838762-5varfhrsgp4666047fukt0u2q2apgv6d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:827889838762:android:a91a593b54d792de777ed3",
+        "android_client_info": {
+          "package_name": "com.example.isntagramclone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "827889838762-5varfhrsgp4666047fukt0u2q2apgv6d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgOz2OYDh0yFg9a9jG0p6Ak10ktWZBYIw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "827889838762-5varfhrsgp4666047fukt0u2q2apgv6d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
