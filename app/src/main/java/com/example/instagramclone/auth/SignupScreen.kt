@@ -24,9 +24,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.instagramclone.DestinationScreen
 import com.example.instagramclone.IgViewModel
 import com.example.instagramclone.R
 import com.example.instagramclone.main.CommonProgressSpiner
+import com.example.instagramclone.main.navigateTo
 
 @Composable
 fun SignupScreen(navController: NavController, vm: IgViewModel) {
@@ -100,7 +102,9 @@ fun SignupScreen(navController: NavController, vm: IgViewModel) {
                 color = androidx.compose.ui.graphics.Color.Blue,
                 modifier = Modifier
                     .padding(8.dp)
-                    .clickable {  }
+                    .clickable {
+                        navigateTo(navController, DestinationScreen.Login)
+                    }
                 )
 
         }
