@@ -31,16 +31,20 @@ class IgViewModel @Inject constructor(
                 if(documents.size() > 0){
                     handleException(customMessage = "Username already exist")
                 } else {
+                    if(email.isNotEmpty() && pass.isNotEmpty()){
                     auth.createUserWithEmailAndPassword(email,pass)
                         .addOnCompleteListener{ task ->
                             if(task.isSuccessful){
                                 signedIn.value = true
                                 //create profile
                             } else {
-                                handleException(task.exception, " Signup failed")
+                                handleException(task.exception, "Signup failed")
                             }
                             inProgress.value = false
                         }
+                    } else {
+                        handleException(null, "Email or Pass can not be empty")
+                    }
                 }
             }
             .addOnFailureListener{
@@ -50,7 +54,7 @@ class IgViewModel @Inject constructor(
     fun handleException(exception: Exception? = null, customMessage: String = " "){
         exception?.printStackTrace()
         val errorMsg = exception?.localizedMessage ?: ""
-        val message = if(customMessage.isEmpty()) errorMsg else "$customMessage : $errorMsg"
+        val message = if(customMessage.isEmpty()) errorMsg else customMessage
         popupNotification.value = Event(message)
     }
 }
