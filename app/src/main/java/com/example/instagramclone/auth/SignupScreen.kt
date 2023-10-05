@@ -28,11 +28,13 @@ import androidx.navigation.NavController
 import com.example.instagramclone.DestinationScreen
 import com.example.instagramclone.IgViewModel
 import com.example.instagramclone.R
+import com.example.instagramclone.main.CheckSignIn
 import com.example.instagramclone.main.CommonProgressSpiner
 import com.example.instagramclone.main.navigateTo
 
 @Composable
 fun SignupScreen(navController: NavController, vm: IgViewModel) {
+    CheckSignIn(vm= vm, navController = navController)
     val focus = LocalFocusManager.current
     Box(modifier = Modifier.fillMaxSize()) {
 

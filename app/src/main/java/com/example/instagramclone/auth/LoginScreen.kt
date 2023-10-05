@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,11 +30,13 @@ import androidx.navigation.NavController
 import com.example.instagramclone.DestinationScreen
 import com.example.instagramclone.IgViewModel
 import com.example.instagramclone.R
+import com.example.instagramclone.main.CheckSignIn
 import com.example.instagramclone.main.CommonProgressSpiner
 import com.example.instagramclone.main.navigateTo
 
 @Composable
 fun LoginScreen(navController: NavController, vm: IgViewModel) {
+    CheckSignIn(vm= vm, navController = navController)
     val focus = LocalFocusManager.current
     Box(
         modifier = Modifier.fillMaxSize()
@@ -69,7 +72,7 @@ fun LoginScreen(navController: NavController, vm: IgViewModel) {
                     emailState.value = it
                 },
                 modifier = Modifier.padding(8.dp),
-                label = { Text(text = "Email")}
+                label = { Text(text = "Email") }
             )
             OutlinedTextField(
                 value = passState.value,
@@ -77,14 +80,16 @@ fun LoginScreen(navController: NavController, vm: IgViewModel) {
                     passState.value = it
                 },
                 modifier = Modifier.padding(8.dp),
-                label = { Text(text = "Password")}
+                label = { Text(text = "Password") },
+                visualTransformation = PasswordVisualTransformation()
             )
             Button(
                 onClick = {
-                          focus.clearFocus(force = true)
+                    focus.clearFocus(force = true)
+                    vm.onLogin(emailState.value.text, passState.value.text)
                 },
                 modifier = Modifier.padding(8.dp)
-            ){
+            ) {
                 Text(text = "Login")
             }
             Text(text = "New here? Go to signup -->",
@@ -96,7 +101,7 @@ fun LoginScreen(navController: NavController, vm: IgViewModel) {
                     })
         }
         val isLoading = vm.inProgress.value
-        if(isLoading){
+        if (isLoading) {
             CommonProgressSpiner()
         }
     }

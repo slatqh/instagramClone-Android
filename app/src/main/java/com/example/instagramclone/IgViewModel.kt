@@ -26,6 +26,7 @@ class IgViewModel @Inject constructor(
     val popupNotification = mutableStateOf<Event<String>?>(null)
 
     init {
+//        auth.signOut()
         val currentUser = auth.currentUser
         signedIn.value = currentUser != null
         currentUser?.uid?.let { uid ->
@@ -33,14 +34,19 @@ class IgViewModel @Inject constructor(
         }
     }
     fun onSignup(username:String, email:String, pass:String){
+
+        if(email.isEmpty() or pass.isEmpty() or username.isEmpty()){
+            handleException(customMessage =  "Email, username or pass can not be empty")
+            return
+        }
             inProgress.value = true
 
         db.collection(USERS).whereEqualTo("username",username).get()
             .addOnSuccessListener { documents ->
                 if(documents.size() > 0){
                     handleException(customMessage = "Username already exist")
+                    inProgress.value = false
                 } else {
-                    if(email.isNotEmpty() && pass.isNotEmpty()){
                     auth.createUserWithEmailAndPassword(email,pass)
                         .addOnCompleteListener{ task ->
                             if(task.isSuccessful){
@@ -51,14 +57,35 @@ class IgViewModel @Inject constructor(
                             }
                             inProgress.value = false
                         }
-                    } else {
-                        handleException(null, "Email or Pass can not be empty")
-                        inProgress.value = false
-                    }
+
                 }
             }
             .addOnFailureListener{
 
+            }
+    }
+    fun onLogin(email: String, pass: String){
+        if(email.isEmpty() or pass.isEmpty()){
+            handleException(customMessage = "Email and pass can not be empty")
+            return
+        }
+        inProgress.value = true
+        auth.signInWithEmailAndPassword(email,pass)
+            .addOnCompleteListener{ task ->
+                if(task.isSuccessful){
+                    signedIn.value = true
+                    inProgress.value = false
+                    auth.currentUser?.uid?.let {uid ->
+                        getUserData(uid)
+                    }
+                } else {
+                    handleException(task.exception, "Login failed")
+                    inProgress.value = false
+                }
+            }
+            .addOnFailureListener{ exc ->
+                handleException(exc, "Login failed")
+                inProgress.value = false
             }
     }
 
