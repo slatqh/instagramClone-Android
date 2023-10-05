@@ -1,3 +1,5 @@
+package com.example.instagramclone.auth
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,9 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -33,11 +35,12 @@ import com.example.instagramclone.main.CommonProgressSpiner
 import com.example.instagramclone.main.navigateTo
 
 @Composable
-fun SignupScreen(navController: NavController, vm: IgViewModel) {
+fun LoginScreen(navController: NavController, vm: IgViewModel) {
     CheckSignIn(vm= vm, navController = navController)
     val focus = LocalFocusManager.current
-    Box(modifier = Modifier.fillMaxSize()) {
-
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -47,31 +50,21 @@ fun SignupScreen(navController: NavController, vm: IgViewModel) {
                 ),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val usernameState = remember { mutableStateOf(TextFieldValue()) }
             val emailState = remember { mutableStateOf(TextFieldValue()) }
             val passState = remember { mutableStateOf(TextFieldValue()) }
-
             Image(
                 painter = painterResource(id = R.drawable.insta_logo),
                 contentDescription = null,
                 modifier = Modifier
                     .width(250.dp)
                     .padding(top = 16.dp)
-                    .padding(10.dp)
+                    .padding(8.dp)
             )
             Text(
-                text = "Signup",
+                text = "Login",
                 modifier = Modifier.padding(8.dp),
                 fontSize = 30.sp,
                 fontFamily = FontFamily.SansSerif
-            )
-            OutlinedTextField(
-                value = usernameState.value,
-                onValueChange = {
-                    usernameState.value = it
-                },
-                modifier = Modifier.padding(8.dp),
-                label = { Text(text = "Username")}
             )
             OutlinedTextField(
                 value = emailState.value,
@@ -79,7 +72,7 @@ fun SignupScreen(navController: NavController, vm: IgViewModel) {
                     emailState.value = it
                 },
                 modifier = Modifier.padding(8.dp),
-                label = { Text(text = "Email")}
+                label = { Text(text = "Email") }
             )
             OutlinedTextField(
                 value = passState.value,
@@ -87,34 +80,28 @@ fun SignupScreen(navController: NavController, vm: IgViewModel) {
                     passState.value = it
                 },
                 modifier = Modifier.padding(8.dp),
-                label = { Text(text = "Password")},
+                label = { Text(text = "Password") },
                 visualTransformation = PasswordVisualTransformation()
             )
             Button(
                 onClick = {
                     focus.clearFocus(force = true)
-                          vm.onSignup(
-                              usernameState.value.text,
-                              emailState.value.text,
-                              passState.value.text
-                          )
+                    vm.onLogin(emailState.value.text, passState.value.text)
                 },
                 modifier = Modifier.padding(8.dp)
-            ){
-                Text(text = "SIGN UP")
+            ) {
+                Text(text = "Login")
             }
-            Text(text = "Already a user? Go to login ->",
-                color = androidx.compose.ui.graphics.Color.Blue,
+            Text(text = "New here? Go to signup -->",
+                color = Color.Blue,
                 modifier = Modifier
                     .padding(8.dp)
                     .clickable {
-                        navigateTo(navController, DestinationScreen.Login)
-                    }
-                )
-
+                        navigateTo(navController, DestinationScreen.Signup)
+                    })
         }
         val isLoading = vm.inProgress.value
-        if(isLoading){
+        if (isLoading) {
             CommonProgressSpiner()
         }
     }
