@@ -26,10 +26,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.instagramclone.IgViewModel
 import com.example.instagramclone.R
+import com.example.instagramclone.main.CommonProgressSpiner
 
 @Composable
 fun SignupScreen(navController: NavController, vm: IgViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -101,6 +103,10 @@ fun SignupScreen(navController: NavController, vm: IgViewModel) {
                     .clickable {  }
                 )
 
+        }
+        val isLoading = vm.inProgress.value
+        if(isLoading){
+            CommonProgressSpiner()
         }
     }
 }
