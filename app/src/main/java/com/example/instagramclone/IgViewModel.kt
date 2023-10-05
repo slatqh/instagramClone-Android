@@ -53,6 +53,7 @@ class IgViewModel @Inject constructor(
                         }
                     } else {
                         handleException(null, "Email or Pass can not be empty")
+                        inProgress.value = false
                     }
                 }
             }
