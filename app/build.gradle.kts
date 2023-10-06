@@ -73,7 +73,6 @@ dependencies {
 
     // my deps
     implementation (libs.androidx.navigation.compose)
-
     implementation (libs.firebase.auth)
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     implementation ("com.google.firebase:firebase-auth-ktx")
