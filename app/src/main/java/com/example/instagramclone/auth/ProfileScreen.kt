@@ -1,16 +1,25 @@
 package com.example.instagramclone.auth
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -22,13 +31,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.instagramclone.DestinationScreen
 import com.example.instagramclone.IgViewModel
 import com.example.instagramclone.main.CommonDivider
+import com.example.instagramclone.main.CommonImage
 import com.example.instagramclone.main.CommonProgressSpiner
 import com.example.instagramclone.main.navigateTo
+import com.google.android.gms.common.internal.service.Common
+import kotlin.contracts.contract
 
 
 @Composable
@@ -48,9 +61,13 @@ fun ProfileScreen(navController: NavController, vm: IgViewModel) {
             onNameChange = { name = it },
             onUsernameChange = { username = it },
             onBioChange = { bio = it },
-            onSave = {vm.updateProfileData(name, username, bio)},
+            onSave = { vm.updateProfileData(name, username, bio) },
             onBack = { navigateTo(navController = navController, DestinationScreen.MyPosts) },
-            onLogout = {})
+            onLogout = {
+                vm.onLogout()
+                navigateTo(navController, DestinationScreen.Login)
+            }
+        )
     }
 }
 
@@ -71,6 +88,7 @@ fun ProfileContent(
 ) {
 
     val scrollState = rememberScrollState()
+    val imageUrl = vm.userData.value?.imageUrl
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
@@ -88,14 +106,7 @@ fun ProfileContent(
         CommonDivider()
 
         // User image upload
-        Column(
-            modifier = Modifier
-                .height(200.dp)
-                .fillMaxWidth()
-                .background(Color.Gray)
-        ) {
-
-        }
+        ProfileImage(imageUrl = imageUrl, vm = vm)
         CommonDivider()
         Row(
             modifier = Modifier
@@ -150,7 +161,43 @@ fun ProfileContent(
                 .padding(top = 16.dp, bottom = 16.dp),
             horizontalArrangement = Arrangement.Center
         ) {
-            Text(text = "Logout", modifier = Modifier.clickable { onLogout.invoke() }, color = Color.Red)
+            Text(
+                text = "Logout",
+                modifier = Modifier.clickable { onLogout.invoke() },
+                color = Color.Red
+            )
+        }
+    }
+}
+
+@Composable
+fun ProfileImage(imageUrl: String?, vm: IgViewModel) {
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) {
+        uri: Uri? ->
+        uri?.let { vm.uploadProfileImage(uri) }
+    }
+    Box(modifier = Modifier.height(IntrinsicSize.Min)) {
+        Column(
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+                .clickable { launcher.launch("image/*")},
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Card(
+                shape = CircleShape, modifier = Modifier
+                    .padding(8.dp)
+                    .size(100.dp)
+            ) {
+                CommonImage(data = imageUrl)
+            }
+            Text(text = "Change profile picture")
+        }
+        val isLoading = vm.inProgress.value
+        if (isLoading) {
+            CommonProgressSpiner()
         }
     }
 }

@@ -20,6 +20,7 @@ import com.example.instagramclone.auth.LoginScreen
 import com.example.instagramclone.auth.ProfileScreen
 import com.example.instagramclone.main.FeedScreen
 import com.example.instagramclone.main.MyPostScreen
+import com.example.instagramclone.main.NewPostScreen
 import com.example.instagramclone.main.NotificationMessage
 import com.example.instagramclone.main.SearchScreen
 import com.example.instagramclone.ui.theme.InstagramCloneTheme
@@ -50,6 +51,9 @@ sealed class DestinationScreen(val route: String) {
     object Search : DestinationScreen("search")
     object MyPosts : DestinationScreen("mypost")
     object Profile: DestinationScreen("profile")
+    object NewPost: DestinationScreen("newpost/{imageUri}"){
+        fun createRoute(uri:String) = "newpost/$uri"
+    }
 }
 
 @Composable
@@ -75,6 +79,12 @@ fun InstagramApp() {
         }
         composable(DestinationScreen.Profile.route) {
             ProfileScreen(navController = navController, vm = vm)
+        }
+        composable(DestinationScreen.NewPost.route){ navBackStackEntry ->
+            val imageUri = navBackStackEntry.arguments?.getString("imageUri")
+            imageUri?.let {
+                NewPostScreen(navController = navController, vm = vm, encodedUri = it)
+            }
         }
     }
 }
