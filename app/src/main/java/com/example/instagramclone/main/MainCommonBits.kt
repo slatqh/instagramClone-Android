@@ -1,5 +1,7 @@
 package com.example.instagramclone.main
 
+import android.os.Bundle
+import android.os.Parcelable
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -56,7 +58,19 @@ fun CommonProgressSpiner() {
     }
 }
 
-fun navigateTo(navController: NavController, dest: DestinationScreen) {
+data class NavParam(
+    var name: String,
+    var value: Parcelable
+)
+
+fun navigateTo(navController: NavController, dest: DestinationScreen, vararg params: NavParam) {
+
+    for(param in params){
+//        navController.currentBackStackEntry?.arguments?.putParcelable(param.name, param.value)
+        navController.currentBackStackEntry?.savedStateHandle?.apply {
+            set(param.name, param.value)
+        }
+    }
     navController.navigate(dest.route) {
         popUpTo(dest.route)
         launchSingleTop = true

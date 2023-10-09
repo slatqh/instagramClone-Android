@@ -18,11 +18,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.instagramclone.auth.LoginScreen
 import com.example.instagramclone.auth.ProfileScreen
+import com.example.instagramclone.data.PostData
 import com.example.instagramclone.main.FeedScreen
 import com.example.instagramclone.main.MyPostScreen
 import com.example.instagramclone.main.NewPostScreen
 import com.example.instagramclone.main.NotificationMessage
 import com.example.instagramclone.main.SearchScreen
+import com.example.instagramclone.main.SinglePostScreen
 import com.example.instagramclone.ui.theme.InstagramCloneTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,8 +36,7 @@ class MainActivity : ComponentActivity() {
             InstagramCloneTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
                     InstagramApp()
                 }
@@ -50,16 +51,18 @@ sealed class DestinationScreen(val route: String) {
     object Feed : DestinationScreen("feed")
     object Search : DestinationScreen("search")
     object MyPosts : DestinationScreen("mypost")
-    object Profile: DestinationScreen("profile")
-    object NewPost: DestinationScreen("newpost/{imageUri}"){
-        fun createRoute(uri:String) = "newpost/$uri"
+    object Profile : DestinationScreen("profile")
+    object NewPost : DestinationScreen("newpost/{imageUri}") {
+        fun createRoute(uri: String) = "newpost/$uri"
     }
+
+    object SinglePost : DestinationScreen("singlepost")
 }
 
 @Composable
 fun InstagramApp() {
     val vm = hiltViewModel<IgViewModel>()
-    val navController = rememberNavController()
+    var navController = rememberNavController()
     NotificationMessage(vm = vm)
     NavHost(navController = navController, startDestination = DestinationScreen.Signup.route) {
         composable(DestinationScreen.Signup.route) {
@@ -80,10 +83,18 @@ fun InstagramApp() {
         composable(DestinationScreen.Profile.route) {
             ProfileScreen(navController = navController, vm = vm)
         }
-        composable(DestinationScreen.NewPost.route){ navBackStackEntry ->
+        composable(DestinationScreen.NewPost.route) { navBackStackEntry ->
             val imageUri = navBackStackEntry.arguments?.getString("imageUri")
             imageUri?.let {
                 NewPostScreen(navController = navController, vm = vm, encodedUri = it)
+            }
+        }
+        composable(DestinationScreen.SinglePost.route) {
+            val postData = navController.previousBackStackEntry?.savedStateHandle?.get<PostData>(
+                "post"
+            )
+            postData?.let {
+                SinglePostScreen(navController = navController, vm = vm, post = postData)
             }
         }
     }
