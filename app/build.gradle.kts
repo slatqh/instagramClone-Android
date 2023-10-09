@@ -84,5 +84,7 @@ dependencies {
     kapt ("com.google.dagger:hilt-compiler:2.48")
     implementation ("io.coil-kt:coil-compose:1.3.2")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+
+    
 }
 

@@ -222,7 +222,8 @@ class IgViewModel @Inject constructor(
                 userImage = currentUserImage,
                 postImage = imageUri.toString(),
                 postDescription = description,
-                time = System.currentTimeMillis()
+                time = System.currentTimeMillis(),
+                likes = listOf<String>()
             )
             db.collection(POSTS).document(postUuid).set(post)
                 .addOnSuccessListener {

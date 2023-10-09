@@ -62,7 +62,7 @@ sealed class DestinationScreen(val route: String) {
 @Composable
 fun InstagramApp() {
     val vm = hiltViewModel<IgViewModel>()
-    var navController = rememberNavController()
+    val navController = rememberNavController()
     NotificationMessage(vm = vm)
     NavHost(navController = navController, startDestination = DestinationScreen.Signup.route) {
         composable(DestinationScreen.Signup.route) {
